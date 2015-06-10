@@ -7,7 +7,7 @@ Loads data about daily activty from raw file out of S3.  Includes a parsing of t
 ### wifidemo
 Database that holds the user activity log data points
 http://bradwbonn.cloudant.com/wifidemo/
-### fencestest
+### testfences
 Database that holds the partner "fence" radii.
-http://bradwbonn.cloudant.com/fencestest/
+http://bradwbonn.cloudant.com/testfences/
 
