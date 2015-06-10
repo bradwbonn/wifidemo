@@ -4,21 +4,50 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-	<title>Cloudant Geo Exercise</title>
+	<title>Cloudant Geo Viewer</title>
 	<link rel="stylesheet" href="style/leaflet.css" />
 </head>
 <body>
 	<div class="container">
 		<div>
-			<h2>Cloudant Geo Exercise:</h2>
-			<h3>Commercial Street SafeWalk corridor and crimes in the corridor</h3>
+			<h2>Cloudant Geo Viewer</h2>
 		</div>
+    <div>
+      input Cloudant Geo query URL:<br/>
+      <input id="geoq" type="text" name="geoq" size="186"><br/>
+      <button onclick="showmap()">Submit Query</button>
+      <p size="-2">ex: https://opendata.cloudant.com/crimes/_design/SpatialView/_geo/spatial?lat=35.7354922&lon=139.746754&radius=1000&limit=200&include_docs=true</p>
+    </div>
 		<div id="map" style="width: 100%; height: 600px"></div>
 	</div>
 	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 	<script src="script/leaflet.js"></script>
 	<script>
-	var map = L.map('map').setView([37.545, 137.703], 6);
+  function showmap() {
+    val = $('#geoq').val();
+    if (val==null) return;
+    cloudantURL = val; // + '&limit=200&include_docs=true';
+    var lat = getQueryParam(val, 'lat');
+    var lon = getQueryParam(val, 'lon');
+    map.panTo(L.latLng(lat, lon));
+
+  	$.getJSON(cloudantURL, null, function onSuccess(data) {
+      if (data.rows) {
+    		for (var i = 0; i < data.rows.length; i++) {
+    			if ( data.rows[i].doc.geometry ) // this skips non-GeoJSON docs, e.g. design documents
+    				geolayer.addData(data.rows[i].doc);
+    		}
+      } else if (data.features) {
+    		for (var i = 0; i < data.features.length; i++) {
+    			if ( data.features[i].geometry ) // this skips non-GeoJSON docs, e.g. design documents
+    				geolayer.addData(data.features[i]);
+    		}
+      } else {
+        alert('Did not understand reponse.');
+      }
+  	});
+  }
+	var map = L.map('map').setView([42.366326, -71.053493], 16);
 
 	L.tileLayer('http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 		maxZoom: 20,
@@ -26,34 +55,12 @@
 		id: 'examples.map-20v6611k'
 	}).addTo(map);
 
-	// TO-DO: Make this a dynamic URL for accessing specific user paths (as data points, then turn it into a path geometry)
-	var cloudantURLforUserPath = 'https://bradwbonn.cloudant.com/wifidemo/_design/users/_view/usertrack?include_docs=true&startkey=%5B%2201-0005304f-0915-42c6-855f-229ab3c42a0b%22%2C%22%22%5D&endkey=%5B%2201-0005304f-0915-42c6-855f-229ab3c42a0b%22%2C%22ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ%22%5D&inclusive_end=true';
+	var cloudantURL = '';
 
-	var pathlayer = L.geoJson(null, {
+	var geolayer = L.geoJson(null, {
 		onEachFeature: onEachFeature
 	}).addTo(map);
-	$.getJSON(cloudantURL, null, function onSuccess(data) {
-		for (var i = 0; i < data.rows.length; i++) {
-			if ( data.rows[i].doc.geometry ) // this skips non-GeoJSON docs, e.g. design documents
-				pathlayer.addData(data.rows[i].doc);
-		}
-	});
-	
-	// TO-DO: Below needs to be adjusted with another for loop like above
-	var intersectedFences = {
-		"type": "Feature", 
-		"properties": {
-			"name": "Geofences intersected by user's path"
-		},
-		"geometry": {
-			"type": "Polygon", 
-			"coordinates": [
-				[ [-71.0537124, 42.3681995], [-71.054399, 42.3675178], [-71.0522962, 42.3667409], [-71.051631, 42.3659324], [-71.051631, 42.3621431], [-71.0502148, 42.3618577], [-71.0505152, 42.3660275], [-71.0511589, 42.3670263], [-71.0537124, 42.3681995] ]
-			]
-		}
-	};
-	L.geoJson(commst).addTo(map);
-
+  
 	function onEachFeature(feature, layer) {
 		if ( feature.properties ) {
 			var pop = '';
@@ -63,6 +70,20 @@
 			layer.bindPopup(pop);
 		}
 	}
+  
+  function getQueryParam(url, key) {
+    var vars = [], hash;
+    var q = url.split('?')[1];
+    if (q != undefined) {
+        q = q.split('&');
+        for(var i = 0; i < q.length; i++){
+            hash = q[i].split('=');
+            vars.push(hash[1]);
+            vars[hash[0]] = hash[1];
+        }
+    }
+    return vars[key];
+  }
 	</script>
 	
 </body>
