@@ -1,0 +1,66 @@
+
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+	<title>Cloudant Geo Exercise</title>
+	<link rel="stylesheet" href="style/leaflet.css" />
+</head>
+<body>
+	<div class="container">
+		<div>
+			<h2>Cloudant Geo Exercise:</h2>
+			<h3>Commercial Street SafeWalk corridor and crimes in the corridor</h3>
+		</div>
+		<div id="map" style="width: 100%; height: 600px"></div>
+	</div>
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script src="script/leaflet.js"></script>
+	<script>
+	var map = L.map('map').setView([37.545, 137.703], 6);
+
+	L.tileLayer('http://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+		maxZoom: 20,
+		detectRetina: true,
+		id: 'examples.map-20v6611k'
+	}).addTo(map);
+
+	var cloudantURL = '../geodd/_geo/geoidx?relation=contains&g=POLYGON%20((-71.0537124%2042.3681995%200,-71.054399%2042.3675178%200,-71.0522962%2042.3667409%200,-71.051631%2042.3659324%200,-71.051631%2042.3621431%200,-71.0502148%2042.3618577%200,-71.0505152%2042.3660275%200,-71.0511589%2042.3670263%200,-71.0537124%2042.3681995%200))&include_docs=true';
+
+	var crimeslayer = L.geoJson(null, {
+		onEachFeature: onEachFeature
+	}).addTo(map);
+	$.getJSON(cloudantURL, null, function onSuccess(data) {
+		for (var i = 0; i < data.rows.length; i++) {
+			if ( data.rows[i].doc.geometry ) // this skips non-GeoJSON docs, e.g. design documents
+				crimeslayer.addData(data.rows[i].doc);
+		}
+	});
+	
+	var commst = {
+		"type": "Feature", 
+		"properties": {
+			"name": "Commercial Street corridor"
+		},
+		"geometry": {
+			"type": "Polygon", 
+			"coordinates": [
+				[ [-71.0537124, 42.3681995], [-71.054399, 42.3675178], [-71.0522962, 42.3667409], [-71.051631, 42.3659324], [-71.051631, 42.3621431], [-71.0502148, 42.3618577], [-71.0505152, 42.3660275], [-71.0511589, 42.3670263], [-71.0537124, 42.3681995] ]
+			]
+		}
+	};
+	L.geoJson(commst).addTo(map);
+
+	function onEachFeature(feature, layer) {
+		if ( feature.properties ) {
+			var pop = '';
+			for (var k in feature.properties) {
+				pop += '<b>' + k + ': </b> ' + feature.properties[k] + '<br/>';
+			}
+			layer.bindPopup(pop);
+		}
+	}
+	</script>
+	
+</body>
