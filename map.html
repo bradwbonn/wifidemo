@@ -26,22 +26,24 @@
 		id: 'examples.map-20v6611k'
 	}).addTo(map);
 
-	var cloudantURL = '../geodd/_geo/geoidx?relation=contains&g=POLYGON%20((-71.0537124%2042.3681995%200,-71.054399%2042.3675178%200,-71.0522962%2042.3667409%200,-71.051631%2042.3659324%200,-71.051631%2042.3621431%200,-71.0502148%2042.3618577%200,-71.0505152%2042.3660275%200,-71.0511589%2042.3670263%200,-71.0537124%2042.3681995%200))&include_docs=true';
+	// TO-DO: Make this a dynamic URL for accessing specific user paths (as data points, then turn it into a path geometry)
+	var cloudantURLforUserPath = 'https://bradwbonn.cloudant.com/wifidemo/_design/users/_view/usertrack?include_docs=true&startkey=%5B%2201-0005304f-0915-42c6-855f-229ab3c42a0b%22%2C%22%22%5D&endkey=%5B%2201-0005304f-0915-42c6-855f-229ab3c42a0b%22%2C%22ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ%22%5D&inclusive_end=true';
 
-	var crimeslayer = L.geoJson(null, {
+	var pathlayer = L.geoJson(null, {
 		onEachFeature: onEachFeature
 	}).addTo(map);
 	$.getJSON(cloudantURL, null, function onSuccess(data) {
 		for (var i = 0; i < data.rows.length; i++) {
 			if ( data.rows[i].doc.geometry ) // this skips non-GeoJSON docs, e.g. design documents
-				crimeslayer.addData(data.rows[i].doc);
+				pathlayer.addData(data.rows[i].doc);
 		}
 	});
 	
-	var commst = {
+	// TO-DO: Below needs to be adjusted with another for loop like above
+	var intersectedFences = {
 		"type": "Feature", 
 		"properties": {
-			"name": "Commercial Street corridor"
+			"name": "Geofences intersected by user's path"
 		},
 		"geometry": {
 			"type": "Polygon", 
