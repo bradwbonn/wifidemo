@@ -26,7 +26,7 @@ doc_insert_list = []
 with open(inputfile) as data_file:    
     data = json.load(data_file)
     
-counter = 0
+counter = 1
 errors = 0
 
 def point_insert(jsondoc):
@@ -64,6 +64,11 @@ for inputdoc in data:
         bulk_insert(doc_insert_list)
         doc_insert_list = []
     counter = counter + 1
+# Add final batch
+if len(doc_insert_list) > 0:
+    bulk_insert(doc_insert_list)
+    
+print "COMPLETE: Malformed entries: {0}".format(errors)
 
 print "COMPLETE: {0} records inserted.  Malformed entries: {1}".format(counter,errors)
 
