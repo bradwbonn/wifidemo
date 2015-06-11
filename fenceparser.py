@@ -69,6 +69,3 @@ if len(doc_insert_list) > 0:
     bulk_insert(doc_insert_list)
     
 print "COMPLETE: Malformed entries: {0}".format(errors)
-
-print "COMPLETE: {0} records inserted.  Malformed entries: {1}".format(counter,errors)
-
