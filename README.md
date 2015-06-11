@@ -13,5 +13,7 @@ Database that holds the determined paths from source data in "wifidemo"
 ### testfences:
 Database that holds the partner "fence" radii.
 
-
+## TO-DO:
+* Create near-circluar polygons of the geofence points for polling of intersecting paths
+* Update pointstopaths.py to only create path objects which correspond to continous travel motion.  Single-point paths then get left alone as merely points.
 
