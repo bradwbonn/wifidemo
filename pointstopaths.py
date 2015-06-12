@@ -22,7 +22,7 @@ insert_batch_size = 500
 counter = 1
 #doc_insert_list = []
 # Number of seconds before a new path is started for a device
-pathtimeout = (60 * 5)
+pathtimeout = (60 * 1)
 
 viewURI = "https://{0}.cloudant.com/{1}/_design/users/_view/usertrack".format(username,sourcedbname)
 viewqueryprefix = "?include_docs=true&inclusive_end=false&reduce=false"
@@ -32,21 +32,24 @@ bulkUri = "https://{0}.cloudant.com/{1}/_bulk_docs".format(username,pathsdbname)
 #https://bradwbonn.cloudant.com/wifidemo/_design/users/_view/usertrack?include_docs=true&startkey=%5B%22id%22%2C%22%22%5D&endkey=%5B%22id%22%2C%7B%7D%5D&inclusive_end=false
 def bulk_insert(doclist):
     formatteddoclist = json.dumps({"docs":doclist})
-    response = requests.post(
-        bulkUri,
-        data=formatteddoclist,
-        auth=creds,
-        headers={"Content-Type": "application/json"}
-    )
-    print "Bulk insert triggered - HTTP Code: {0}".format(response.status_code)
+    try:
+        response = requests.post(
+            bulkUri,
+            data=formatteddoclist,
+            auth=creds,
+            headers={"Content-Type": "application/json"}
+        )
+    except requests.exceptions.RequestException as e:
+        print e
+        sys.exit()
+    #print "Bulk insert triggered - HTTP Code: {0}".format(response.status_code)
 
 def gettimedifference(current, last):
     d = current - last
     return d.seconds
 
-def getpathpoints(devID):
+def getpathpoints(devID, doc_insert_list):
     pointset = []
-    doc_insert_list = []
     # Get all GPS points for the device
     URI = viewURI+viewqueryprefix+"&startkey=%5B%22"+devID+"%22%2C%22%22%5D&endkey=%5B%22"+devID+"%22%2C%7B%7D%5D"
     response = requests.get(
@@ -83,19 +86,13 @@ def getpathpoints(devID):
             my_feature = Feature(geometry=newpath, properties={"stoptime": thistime.isoformat(), "starttime": firsttime.isoformat()})
             doc_insert_list.append(my_feature)
             pointset = []
-            # Insert when batch counted
-            if len(doc_insert_list) / int(insert_batch_size) == len(doc_insert_list) / float(insert_batch_size):
-                bulk_insert(doc_insert_list)
-                doc_insert_list = []
-            sys.stdout.write(".")
-            sys.stdout.flush()
+            #sys.stdout.write(".")
+            #sys.stdout.flush()
         # If we are not the first point, but time difference is > the fixed gap, and len(pointset) = 1, don't store, reset pointset and continue
         elif ((len(pointset) == 1) and (gettimedifference(thistime, lasttime) > pathtimeout)):
             pointset = []
-    # Insert any remaining rows into database once loop through all rows is complete
-    if len(doc_insert_list) > 0:
-        bulk_insert(doc_insert_list)
-        doc_insert_list = []
+    return doc_insert_list
+
 
 # Get full list of device IDs from database view
 deviceIDs = requests.get(
@@ -104,8 +101,27 @@ deviceIDs = requests.get(
     headers={"Content-Type": "application/json"}
 )
 print "List of ID's collected. Total count: {0}".format(len(deviceIDs.json()["rows"]))
+doc_insert_list = []
     
 # Convert each device's check-in points to a path and insert it into the target database
+completioncounter = 0
+percentcomplete = 0.00
+lastpercentcomplete = 0.00
 for deviceid in deviceIDs.json()["rows"]:
     thisdeviceid = deviceid["key"][0]
-    getpathpoints(thisdeviceid)
+    doc_insert_list = getpathpoints(thisdeviceid,doc_insert_list)
+    # Insert when batch counted
+    if len(doc_insert_list) / int(insert_batch_size) == len(doc_insert_list) / float(insert_batch_size):
+        bulk_insert(doc_insert_list)
+        doc_insert_list = []
+    percentcomplete = (float(completioncounter) / len(deviceIDs.json()["rows"]))*100
+    if (percentcomplete > lastpercentcomplete):
+        print("{0:.2f}% complete".format(percentcomplete))
+        lastpercentcomplete = percentcomplete
+    completioncounter = completioncounter + 1
+    #print "{0}% Complete".format(completioncounter / len(deviceIDs.json()["rows"]))
+
+# Insert any remaining rows into database once loop through all rows is complete
+if len(doc_insert_list) > 0:
+    bulk_insert(doc_insert_list)
+    doc_insert_list = []    
