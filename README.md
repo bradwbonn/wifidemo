@@ -16,4 +16,5 @@ Database that holds the partner "fence" radii.
 ## TO-DO:
 * Create near-circluar polygons of the geofence points for polling of intersecting paths
 * Create query script to obtain the most commonly crossed geofences, displaying geojson on google maps with highlight colors for frequency
+* Resolve anomalous data points
 
