@@ -1,0 +1,976 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "stroke": "#555555",
+        "stroke-width": 2,
+        "stroke-opacity": 1,
+        "fill": "#78fa7d",
+        "fill-opacity": 0.5,
+        "city_code": 13113,
+        "name": "Shibuya-ku",
+        "state_name": "Tokyo",
+        "state_name_jp": "東京都",
+        "station_name_jp": "null",
+        "county_name_jp": "null",
+        "city_name_jp": "null",
+        "distric_name_jp": "渋谷区",
+        "population": 204753,
+        "num_households": 123718
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              139.686628,
+              35.682609
+            ],
+            [
+              139.68747475000006,
+              35.681752
+            ],
+            [
+              139.68861,
+              35.68219462500008
+            ],
+            [
+              139.690876,
+              35.683812
+            ],
+            [
+              139.694459,
+              35.686288
+            ],
+            [
+              139.69529025000008,
+              35.68677875000009
+            ],
+            [
+              139.6962215000001,
+              35.687174
+            ],
+            [
+              139.70045975000005,
+              35.68884450000007
+            ],
+            [
+              139.70138,
+              35.689041
+            ],
+            [
+              139.702099,
+              35.689169
+            ],
+            [
+              139.70578,
+              35.688048
+            ],
+            [
+              139.7147919370001,
+              35.680676334000054
+            ],
+            [
+              139.71438250000003,
+              35.67992012500008
+            ],
+            [
+              139.7135575000001,
+              35.67846350000007
+            ],
+            [
+              139.712898,
+              35.677166
+            ],
+            [
+              139.712891,
+              35.674618
+            ],
+            [
+              139.7169471850001,
+              35.67364177400009
+            ],
+            [
+              139.71135992000006,
+              35.66693111100005
+            ],
+            [
+              139.7106670510001,
+              35.66621156400004
+            ],
+            [
+              139.70861450000007,
+              35.66418625000006
+            ],
+            [
+              139.713196,
+              35.658281
+            ],
+            [
+              139.714693,
+              35.65724650000004
+            ],
+            [
+              139.71806475000005,
+              35.65672912500008
+            ],
+            [
+              139.721971,
+              35.655603
+            ],
+            [
+              139.723557,
+              35.646701
+            ],
+            [
+              139.722711001,
+              35.64471750000007
+            ],
+            [
+              139.7216455,
+              35.64440575000009
+            ],
+            [
+              139.71903405700004,
+              35.641765553000084
+            ],
+            [
+              139.71762211300006,
+              35.641645947000086
+            ],
+            [
+              139.710104,
+              35.641574
+            ],
+            [
+              139.709386,
+              35.641746
+            ],
+            [
+              139.708621,
+              35.642007
+            ],
+            [
+              139.707528,
+              35.642694
+            ],
+            [
+              139.704748,
+              35.644587
+            ],
+            [
+              139.695888,
+              35.650682
+            ],
+            [
+              139.69321,
+              35.653658
+            ],
+            [
+              139.691649,
+              35.655874
+            ],
+            [
+              139.690045,
+              35.658077
+            ],
+            [
+              139.68711075000007,
+              35.66172812500008
+            ],
+            [
+              139.685143,
+              35.66263150000009
+            ],
+            [
+              139.684141,
+              35.662909
+            ],
+            [
+              139.67957025000007,
+              35.66381750000005
+            ],
+            [
+              139.678107,
+              35.663939
+            ],
+            [
+              139.67717091600002,
+              35.66390953300004
+            ],
+            [
+              139.6764509840001,
+              35.66386154600008
+            ],
+            [
+              139.6754908810001,
+              35.66382317700004
+            ],
+            [
+              139.6747333620001,
+              35.663914152000075
+            ],
+            [
+              139.67424833300004,
+              35.66449516700004
+            ],
+            [
+              139.67322150000007,
+              35.66643650000009
+            ],
+            [
+              139.6728283330001,
+              35.667396
+            ],
+            [
+              139.669917,
+              35.671778
+            ],
+            [
+              139.663101,
+              35.671485
+            ],
+            [
+              139.6618547500001,
+              35.67172212500009
+            ],
+            [
+              139.66155267200008,
+              35.672395546000075
+            ],
+            [
+              139.66211650000002,
+              35.673545501000035
+            ],
+            [
+              139.661815992,
+              35.67439460800006
+            ],
+            [
+              139.66222807100007,
+              35.67562285900004
+            ],
+            [
+              139.66315266700008,
+              35.676004
+            ],
+            [
+              139.66418750600008,
+              35.67646178300003
+            ],
+            [
+              139.66483950000008,
+              35.676667001000055
+            ],
+            [
+              139.6655495,
+              35.67717983300008
+            ],
+            [
+              139.666104,
+              35.67804875100006
+            ],
+            [
+              139.666556507,
+              35.67886060300009
+            ],
+            [
+              139.66712405700002,
+              35.67937305600009
+            ],
+            [
+              139.66771745300002,
+              35.67985707200006
+            ],
+            [
+              139.669012,
+              35.680608
+            ],
+            [
+              139.670081,
+              35.681078
+            ],
+            [
+              139.671372,
+              35.681554
+            ],
+            [
+              139.67515,
+              35.684661
+            ],
+            [
+              139.67569450000008,
+              35.685623
+            ],
+            [
+              139.676785,
+              35.686667
+            ],
+            [
+              139.67779775000008,
+              35.68735312500007
+            ],
+            [
+              139.6793120330001,
+              35.68858568300004
+            ],
+            [
+              139.68015539600003,
+              35.68955106200008
+            ],
+            [
+              139.68103642100002,
+              35.69023692600007
+            ],
+            [
+              139.68316581300007,
+              35.691677162000076
+            ],
+            [
+              139.683987,
+              35.692172
+            ],
+            [
+              139.683292206,
+              35.68912331800004
+            ],
+            [
+              139.685809,
+              35.683575
+            ],
+            [
+              139.686628,
+              35.682609
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "_id": "WRN100044",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6972123,
+          35.66202430000001
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "GLT100009",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7026755,
+          35.6701707
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100009",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6967707,
+          35.6610494
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WKF300022",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7004176,
+          35.6618522
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "DON100014",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6968846,
+          35.6601829
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100033",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6988678,
+          35.6605968
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100104",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.69904,
+          35.6605134
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100108",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6991746,
+          35.6603353
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100067",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7046504,
+          35.6678572
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WAO100021",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.700026,
+          35.66009409999999
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "MKY100019",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6994011,
+          35.6598163
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "MKY100003",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6997816,
+          35.6597608
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100070",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7025785,
+          35.6614745
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "MKY100006",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7046752,
+          35.6709818
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "BIC100001",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.69951185,
+          35.65930765
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WAO100085",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7008815,
+          35.6597164
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WKF300023",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6967152,
+          35.6584636
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "BIC100005",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.70190606,
+          35.65999651
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "GLT100003",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7032146,
+          35.6602775
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WTL100114",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.700386147444,
+          35.6574142682856
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100062",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6930594,
+          35.6785778
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100041",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7043979,
+          35.6591388
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100110",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.702712,
+          35.6576639
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100075",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7067193,
+          35.6747286
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100054",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7059366,
+          35.6596582
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100013",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7015788,
+          35.6559779
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100050",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7085498,
+          35.672279
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100055",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7042618,
+          35.6567807
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100015",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7019473,
+          35.6816804
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WKF300037",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6871238,
+          35.6802302
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100064",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6890597,
+          35.6819578
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100071",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7030276,
+          35.6833691
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100053",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7024038,
+          35.6519646
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100063",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6932897,
+          35.6847576
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100098",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7098215,
+          35.6809891
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WRN100016",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.710052,
+          35.6809808
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "ODK100003",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7003857,
+          35.68761002
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "ODK100008",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7003857,
+          35.68761002
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "ODK100039",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7003857,
+          35.68761002
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "ODK100040",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6996746,
+          35.68851823
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100089",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7082701,
+          35.6484291
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WKF300145",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7081368,
+          35.6471709
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WKF300150",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7081368,
+          35.6471709
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100002",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7110171,
+          35.6467821
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100039",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.680774,
+          35.6883068
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WTL100010",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.711441720868,
+          35.6467386032727
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100034",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7127502,
+          35.6472904
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WTL100230",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.712939589288,
+          35.6468946127496
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100104",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6700005,
+          35.67359709999999
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100043",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.71002,
+          35.6440741
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100068",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.7224937,
+          35.6512902
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    },
+    {
+      "_id": "WSA100076",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          139.6628316,
+          35.6736663
+        ]
+      },
+      "type": "Feature",
+      "properties": []
+    }
+  ]
+}
