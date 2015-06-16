@@ -13,8 +13,12 @@ Database that holds the determined paths from source data in "wifidemo"
 ### https://bradwbonn.cloudant.com/testfences
 Database that holds the partner "fence" radii.
 
+## Map of partner fences to demo from:
+http://bl.ocks.org/d/ef47f8d020bf10e66388
+
+
 ## TO-DO:
-* Create near-circluar polygons of the geofence points for polling of intersecting paths
+--* Create near-circluar polygons of the geofence points for polling of intersecting paths--
 * Create query script to obtain the most commonly crossed geofences, displaying geojson on google maps with highlight colors for frequency
-* Resolve anomalous data points
+* Resolve anomalous data points > Must be done at app level
 
