@@ -25,6 +25,6 @@ https://gist.github.com/bradwbonn/dae2183d052b2409dae5
 
 ## TO-DO:
 * ~~Create near-circluar polygons of the geofence points for polling of intersecting paths~~
-* Create query script to obtain the most commonly crossed geofences, displaying geojson on google maps with highlight colors for frequency
-* Resolve anomalous data points > Must be done at app level
+* ~~Create query script to obtain the most commonly crossed geofences, displaying geojson on google maps with highlight colors for frequency~~
+* Resolve anomalous data points > Must be done at app level and tagged as either IP or GPS-sourced data points in the JSON
 
