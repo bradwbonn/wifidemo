@@ -7,8 +7,7 @@ Loads data about daily activty from raw file out of S3.  Includes a parsing of t
 ### pointstopaths.py:
 Script to take check-in point locations by each device ID, and convert them into linestring features in the wifipaths database
 ### buildmap.py:
-Very basic map creator that outputs tagged GeoJSON for displaying on interactive maps at http://geojson.io
-Specifically, this script creates a color-coded map of Shibuya and darker blue for fence IDs that have more device check-ins within a 100-meter radius
+Simple script that uses Cloudan't geo-spatial index to create a color-coded map of Shibuya's partner geofence locations, with darker blue color for fence IDs that have more device check-ins within a 100-meter radius. This simple demo uses geojson.io to create an interactive map representation of the results.
 
 ### https://bradwbonn.cloudant.com/wifidemo
 Database that holds the user activity log data points
