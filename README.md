@@ -19,8 +19,8 @@ Database that holds the partner "fence" radii.
 ## Map of partner fences to demo from:
 http://bl.ocks.org/d/ef47f8d020bf10e66388
 
-## Completed Map of locations with most frequent device check-ins within 100 meters:
-https://gist.github.com/bradwbonn/dae2183d052b2409dae5
+## Completed Map of locations with most frequent device check-ins within 100 meters is shown here:
+https://gist.github.com/bradwbonn/a2f96c0de6efa0674d9e
 
 ## TO-DO:
 * ~~Create near-circluar polygons of the geofence points for polling of intersecting paths~~
