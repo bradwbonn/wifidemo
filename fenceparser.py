@@ -8,7 +8,7 @@ from pprint import pprint
 from geojson import Feature, Point
 import cloudant
 
-insert_batch_size = 1000
+insert_batch_size = 2000
 inputfile = 'geofence.json'
 username = os.environ['CLOUDANTUSER']
 password = os.environ['CLOUDANTPASS']
