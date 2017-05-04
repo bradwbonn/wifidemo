@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Wi2 Geofence Demo</title>
+<style>
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 5px;
+    text-align: left;    
+}
+</style>
+</head>
+<body>
+
+<h2>Cloudant Geofence Demonstration App</h2>
+<form method="post" action="{{ url_for('search') }}">
+  <table>
+    <tr>
+      <td>
+        Location:<br>
+        <input type="radio" name="querylocation" value="haneda" checked>Haneda Airport<br>
+        <input type="radio" name="querylocation" value="greatbuddha">Great Buddha Kamakura<br>
+        <input type="radio" name="querylocation" value="wi2">Daiwa Roynet Hotel, Ginza<br>
+        <input type="radio" name="querylocation" value="custom" disabled>Custom:
+      </td>
+      <td>
+        {{message}}
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Query Type:<br>
+        <input type="radio" name="querytype" value="radius">Radius from point<br>
+        <input type="radio" name="querytype" value="nearest">Nearest entities to point<br>
+        <input type="radio" name="querytype" value="intersects" checked>All entities that intersect with feature<br>
+        <input type="radio" name="querytype" value="contains" disabled>All entities that are contained by feature
+      </td>
+      <td rowspan="6"><img src="{{image}}"></td>
+    </tr>
+    <tr>
+      <td>
+        Radius in meters:<input type="number" name="radius" value="100" size="10">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Limit search to:<input type="number" name="limit" min="1" max="200" value="50" size="10">items
+      </td>
+    </tr>
+    <tr>
+      <td align="center">
+        <input type="submit" title="Search">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Query time: {{time}} seconds
+      </td>
+    </tr>
+    <tr>
+      <td>
+        Query URI: {{uri}}
+      </td>
+    </tr>
+  </table>
+</form>
+
+</body>
+</html>
+
