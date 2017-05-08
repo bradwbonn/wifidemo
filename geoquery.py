@@ -38,7 +38,7 @@ def main():
     myJSON = getFences(myQuery, myAuth)
     showResponse(myJSON)
     
-def chooseCoordinates():
+def chooseCoordinatesOld():
     print "\n 以下のオプションから座標を選択してください:"
     print " 1. 羽田空港ターミナル Haneda Airport Terminal"
     print " 2. 大仏鎌倉 Great Buddha Kamakura"
@@ -54,6 +54,24 @@ def chooseCoordinates():
     if menuOption == 4:
         longitude = raw_input(" 入力経度してください: ")
         latitude = raw_input(" 入力してください緯度: ")
+        return [longitude, latitude]
+    
+def chooseCoordinates(): # Better translation by Noma-San
+    print "\n 以下のオプションから座標を選択してください:"
+    print " 1. 羽田空港ターミナル"
+    print " 2. 鎌倉の大仏"
+    print " 3. Wi2 オフィス"
+    print " 4. 座標を入力"
+    menuOption = int(raw_input(" (1-4) > "))
+    if menuOption == 1:
+        return [139.78111267089844, 35.55436500410275]
+    if menuOption == 2:
+        return [139.535700, 35.316698]
+    if menuOption == 3:
+        return [139.769246, 35.673325]
+    if menuOption == 4:
+        longitude = raw_input(" 経度を入力してください: ")
+        latitude = raw_input(" 緯度を入力してください: ")
         return [longitude, latitude]
 
 def getRelationType():
