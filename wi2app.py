@@ -19,13 +19,15 @@ app = Flask(__name__, static_url_path='')
 def map():
     return render_template('mapform.html',image='images/japan.png',time='N/A',uri='N/A',message='Ready!')
     
-@app.route("/search/", methods=['POST'])
+@app.route("/", methods=['POST'])
 def search():
-    print "POST received"
-    print request.form
+    ver("POST received")
+    ver(request.form)
+    
+    newImageName = "images/querymap_{0}.png".format(int(time()))
     
     def get_point(location):
-        print "Setting point"
+        ver("Setting point")
         if location == "haneda":
             return [139.78111267089844, 35.55436500410275]
         elif location == "greatbuddha":
@@ -37,12 +39,17 @@ def search():
         return 
     
     def render_map(formdata):
-        print "Preparing map for: {0}".format(formdata['querylocation'])
+        ver("Preparing map for: {0}".format(formdata['querylocation']))
+        authSelector = dict(
+            fencemaster = ("tinetiffeencesidetteryto","1d181a41ebbe621ad2cf7fd5780261efeae17c7e"),
+            testfences = ("ieuredislonlyeacticullea","e346439405bc87a5ea7adb3941f5f92bcf83a3c2"),
+            pullpaths = ("itsederesedowtherandstra","24c8cb6b93ba3e82a4a07d2e7fb180be29a880b1")
+        )
         account = 'bradwbonn'
-        db = 'fencemaster'
+        db = formdata['database']
         ddoc = 'geoIdx'
         index = 'newGeoIndex'
-        myAuth = ("tinetiffeencesidetteryto","1d181a41ebbe621ad2cf7fd5780261efeae17c7e") # APIキーは読み取り専用です
+        myAuth = authSelector[db] # APIキーは読み取り専用です
         
         myPoint = get_point(formdata['querylocation'])
         pointWKT = "point({0}+{1})".format(myPoint[0],myPoint[1]) # longitude first
@@ -72,50 +79,61 @@ def search():
         
         if fences[0] == -1:
             return {
-                'queryTime': querytime,
+                'queryTime': 0,
                 'message': "DATABASE ERROR",
                 'uri': queryString
                 }
         else:
             featureCollection = buildFeatureCollection(fences, myPoint)
+            queryTime = fences[0]
         
         try:
             service = Static()
-            service.session.params['access_token'] = os.environ['MAPBOX_ACCESS_TOKEN']
-            # service.session.params['access_token'] = 'pk.eyJ1IjoiYnJhZHdib25uIiwiYSI6ImNqMjd3bmEwbjAwMjQyeHF0OGp3dm5ibWUifQ.uNds-BFopyeVQY7beRAeQw'
+            # service.session.params['access_token'] = os.environ['MAPBOX_ACCESS_TOKEN']
+            #ver("Feature Collection size: {0}".format(len(featureCollection)))
+            service.session.params['access_token'] = 'pk.eyJ1IjoiYnJhZHdib25uIiwiYSI6ImNqMjd3bmEwbjAwMjQyeHF0OGp3dm5ibWUifQ.uNds-BFopyeVQY7beRAeQw'
             response = service.image('mapbox.streets', features=featureCollection)
+            if response.status_code <> 200:
+                ver("Mapbox error: HTTP {0}: {1}".format(response.status_code,response.text))
         except Exception as e:
-            print "Unable to render map: {0}".format(e)
+            ver("Unable to render map: {0}".format(e))
+            return {
+                'queryTime': 0,
+                'message': "Results too large for static map render",
+                'uri': queryString
+            }            
         
         try:
-            with open('images/querymap.png', 'wb') as output:
+            with open(newImageName, 'wb') as output:
                 output.write(response.content)
-                fencesFound = len(fences - 1)
-                if fencesFound > 0:
-                    message = "Showing {0} matching entities".format(fencesFound)
-                else:
-                    message = "No matching entities"
-                return {
-                    'queryTime': querytime,
-                    'message': message,
-                    'uri': queryString
-                }
+            ver("Map image written")
         except Exception as e:
-            print "Cannot write file: {0}".format(e)
+            ver("Cannot write file: {0}".format(e))
             return {
                 'queryTime': 0,
                 'message': "***Unable to render map!***",
                 'uri': queryString
             }
+        fencesFound = len(fences) - 1
+        if fencesFound > 0:
+            message = "Showing {0} matching entities".format(fencesFound)
+        else:
+            message = "No matching entities"
+        return {
+            'queryTime': queryTime,
+            'message': message,
+            'uri': queryString
+        }
+
     
     def buildFeatureCollection(fences, queryPoint):
-        print "Assembling feature collection" 
+        ver("Assembling feature collection")
         tempArray = [
             geojson.Feature(
                 geometry=geojson.Point(
                     queryPoint
                 ),
-                properties="Device Location"
+                properties={'id': "Device Location", 'marker-symbol': 'star', 'marker-color': '#f44'}
             )
         ]
         if fences[0] == 0:
@@ -135,7 +153,7 @@ def search():
                             geometry=geojson.Polygon(
                                 fence['geometry']['coordinates']
                             ),
-                            properties={'ID': fence['id'] }
+                            properties={'ID': fence['id'],  'color': '0000FF'}
                         )
                     )
                 elif featureType == "Point":
@@ -144,7 +162,7 @@ def search():
                             geometry=geojson.Point(
                                 fence['geometry']['coordinates']
                             ),
-                            properties={'ID': fence['id'] }
+                            properties={'ID': fence['id'], 'marker-color':'0000FF' }
                         )
                     )
                 elif featureType == "LineString":
@@ -153,14 +171,13 @@ def search():
                             geometry=geojson.LineString(
                                 fence['geometry']['coordinates']
                             ),
-                            properties={'ID': fence['id'] }
+                            properties={'ID': fence['id'], 'color':'0000FF' }
                         )
                     )
-        
         return geojson.FeatureCollection(tempArray)
     
     def getFences(query,myAuth):
-        print "Querying Cloudant geo database"
+        ver("Querying Cloudant geo database")
         startTime = time()
         try:
             r = requests.get(
@@ -169,7 +186,7 @@ def search():
                 auth = myAuth
             )
         except Exception as e:
-            print "Unable to query Cloudant database: {0}".format(e)
+            ver("Unable to query Cloudant database: {0}".format(e))
         endTime = time()
         queryTime = round((endTime - startTime),2)
         if r.status_code != 200:
@@ -180,14 +197,21 @@ def search():
         fenceIDs = [queryTime]
         for row in jsonResponse['rows']:
             fenceIDs.append(row)
-        print "Query complete in {0} sec, items found: {1}".format(queryTime,len(jsonResponse['rows']))
+        ver("Query complete in {0} sec, items found: {1}".format(queryTime,len(jsonResponse['rows'])))
         return fenceIDs
     
     mapMetaData = render_map(request.form)
-    
+    if mapMetaData['message'] == "No matching entities":
+        returnImage = 'images/japan.png'
+    elif mapMetaData['message'] == "***Unable to render map!***":
+        returnImage = 'images/japan.png'
+    elif mapMetaData['message'] == "Results too large for static map render":
+        returnImage = 'images/japan.png'
+    else:
+        returnImage = newImageName
     return render_template(
         'mapform.html',
-        image='/images/querymap.png',
+        image=returnImage,
         time=mapMetaData['queryTime'],
         message=mapMetaData['message'],
         uri=mapMetaData['uri']
@@ -205,6 +229,10 @@ def search():
 #        output.write(response.content)
 #    return render_template('mapform.html',image='japan.png')
 
+# Print function for verpose diagnostics
+def ver(printThis):
+    print " {0}".format(printThis)
+
 @app.route('/images/<path:path>')
 def send_img(path):
     return send_from_directory('images', path)
@@ -215,4 +243,4 @@ def send_img(path):
 
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug=True)

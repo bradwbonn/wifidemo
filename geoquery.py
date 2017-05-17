@@ -14,6 +14,7 @@ import requests
 from pprint import pprint
 from sys import exit
 from time import time
+from mapbox import Geocoder
 
 def main():
     myAccount = "bradwbonn"
@@ -125,8 +126,27 @@ def getFences(query,myAuth):
 
 def showResponse(jsonResponse):
     print "\n この場所はジオフェンスにあります"
+    perm_geocoder = Geocoder()  # マップボックスの統合
+    perm_geocoder.session.params['access_token'] = 'pk.eyJ1IjoiYnJhZHdib25uIiwiYSI6ImNqMjd3bmEwbjAwMjQyeHF0OGp3dm5ibWUifQ.uNds-BFopyeVQY7beRAeQw'
     for row in jsonResponse['rows']:
-        print " " + row['id']
+        try:
+            response = perm_geocoder.reverse(
+                lon=row['geometry']['coordinates'][0],
+                lat=row['geometry']['coordinates'][1],
+                types=['address','neighborhood','locality','place','region']
+            )
+        except:
+            response = perm_geocoder.reverse(
+                lon=row['geometry']['coordinates'][0][0][0],
+                lat=row['geometry']['coordinates'][0][0][1],
+                types=['address','neighborhood','locality','place','region']
+            )
+        try:
+            address = response.geojson()['features'][0]['place_name']
+        except:
+            address = "場所は不明です"
+        print " " + row['id'] + " " + address
+        
     showMe = raw_input("\n JSONを見たいですか？(y/n) > ")
     if showMe == "y" or showMe == "Y":
         print "\n JSONレスポンス:"
