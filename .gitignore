@@ -1,3 +1,5 @@
 venv/
 images/
 japan.geojson
+newpaths.json
+geofence.json
