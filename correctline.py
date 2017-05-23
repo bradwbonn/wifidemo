@@ -179,6 +179,7 @@ def correction(uncorrectedLine, rev):
                     goodMatches = goodMatches + 1
         except Exception as e:
             print "Couldn't match {0}: {1}".format(profile,e)
+            
     if goodMatches > 0:
         print "Decent matches found!"
     else:

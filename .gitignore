@@ -1,5 +1,9 @@
 venv/
 images/
+bin/
+include/
+lib/
 japan.geojson
 newpaths.json
 geofence.json
+.Python

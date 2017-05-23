@@ -116,7 +116,10 @@ def getFences(query,myAuth):
         auth = myAuth
     )
     endTime = time()
-    print "\n 実行パフォーマンス: {0} 秒".format(round((endTime - startTime),2))
+    jsonResponse = r.json()
+    if len(jsonResponse['rows']) == 0:
+        exit("\n 一致する地理空間エンティティはありません No geo entities match\n")
+    print "\n ジオフェンス: {0} 実行パフォーマンス: {1} 秒".format(len(jsonResponse['rows']), round((endTime - startTime),2))
     if r.status_code != 200:
         exit("\n データベースエラー HTTP {0}".format(r.status_code))
     jsonResponse = r.json()
