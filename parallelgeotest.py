@@ -4,10 +4,47 @@
 # Script to demonstrate parallel geo query operations
 
 # libraries
-import requests, json
+import requests, json, random
+from time import time
 from multiprocessing import Pool
 from argparse import ArgumentParser
 
+c = dict(
+    # Set variables
+    srcAPIKey = ("diaccarthereselyingensid","1fa4571f5365d6991b036c67713ace151cc9bab9"),
+    srcDB = 'spapp',
+    urlbase = "https://bradwbonn.cloudant.com/"
+)
+
+def main():
+    a = get_args()
+    
+    print " サンプルデータセットを取得しています。お待ちください"
+    
+    datapoints = get_point_set(a.datapoints)
+    
+    print " {0}データポイントが取得されました".format(len(datapoints))
+    
+    print " クエリは{0}つのスレッドで実行されます".format(a.threads)
+    
+    pool = Pool(a.threads)
+    
+    print " テストは今実行中です..."
+    
+    startTime = time()
+    
+    results = pool.map(query_task,datapoints)
+    
+    totalTime = time() - startTime
+    
+    totalFences = 0
+    
+    for fences in results:
+        
+        totalFences = totalFences + fences
+
+    print " {0}秒で{1}の地理空間クエリが完了しました".format(round(totalTime,2),a.datapoints)
+    print " {0}ジオフェンスマッチ".format(totalFences)
 
 def get_args():
     # parameters: <number of data points> <number of threads>
@@ -24,24 +61,49 @@ def get_args():
         default=8
     )
     myargs = argparser.parse_args()
+    return myargs
     
 # Obtain a list of specified device check-in points from 'spapp' Cloudant database starting at a random skip value
 def get_point_set(pointCount):
-    pass
-
-
-# Record start time and spawn separate tasks
-def begin_run(threads):
-    pass
+    skip = random_skip(pointCount)
+    r = requests.get(
+        url = "{0}{1}/_all_docs".format(c['urlbase'], c['srcDB']),
+        params = {
+            'limit': pointCount,
+            'skip': skip,
+            'include_docs': 'true'
+        },
+        auth = c['srcAPIKey']
+    )
+    coordinateSet = []
+    for row in r.json()['rows']:
+        coordinateSet.append(row['doc']['geometry']['coordinates'])
+    return coordinateSet
 
 # Inside each task:
-def query_task():
-    pass
-    # Perform geofence lookups for each set of coordinates
+def query_task(datapoint):
+
+    WKT = "point({0}+{1})".format(datapoint[0],datapoint[1])
+    r = requests.get(
+        url = "https://bradwbonn.cloudant.com/fencemaster/_design/geoIdx/_geo/newGeoIndex?g={0}".format(WKT),
+        auth = c['srcAPIKey'],
+        params = {
+            'limit':20
+        },
+        headers = {'Content-Type': 'application/json'}
+    )
     
-    # Return number of fences found and speed of operation in response
+    fencesFound = len(r.json()['rows'])
     
-    # print results for each thread.
+    # return this thread's fence found count
+    return fencesFound
     
-def print_results():
-    pass
+
+def random_skip(datapoints):
+    # get doc count from db (hard-coded for speed right now)
+    docCount = 924776
+    # return random int between 0 and doc count - datapoints
+    return random.randint(0,docCount - (datapoints + 1))
+    
+if __name__ == "__main__":
+    main()
