@@ -1,8 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
+# 03-82603350-0a6f-400a-9ab2-31c009e0864e
 
-import requests, json, geojson, sys, time
+import requests, json, geojson, sys, time, random
 from mapbox import MapMatcher
+from argparse import ArgumentParser
 
 c = dict(
     # Set variables
@@ -16,10 +18,24 @@ c = dict(
 
 def main():
     clear_DB()
-    deviceID = select_device()
+    myargs = get_args()
+    if myargs.deviceID == 'find':
+        deviceID = select_device()
+    else:
+        deviceID = myargs.deviceID
     uncorrectedLine = get_device_points(deviceID)
-    rev = insert_raw_line(uncorrectedLine)
-    correction(uncorrectedLine, rev)
+    correction(uncorrectedLine)
+
+def get_args():
+    argparser = ArgumentParser(description = 'Correct a device path line')
+    argparser.add_argument(
+        'deviceID',
+        type=str,
+        help="Input a device ID to correct the path of. Use 'find' to choose from possible candidates",
+        default='03-82603350-0a6f-400a-9ab2-31c009e0864e'
+    )
+    myargs = argparser.parse_args()
+    return myargs
 
 # Delete passed docID and rev
 def delete_doc(docID, rev):
@@ -51,7 +67,7 @@ def clear_DB():
     for doc in docs:
         docID = doc[0]
         rev = doc[1]
-        if "pathafter" in docID or "pathbefore" in docID:
+        if "_design" not in docID:
             delete_docs['docs'].append(
                 {
                     "_id": docID,
@@ -68,7 +84,7 @@ def clear_DB():
 
 # Select from available device tracks in spapp
 def select_device():
-    print "Choose from the following list of possible devices: "
+    print "Searching for possible device IDs to choose from, please wait... "
     selector = 1
     devices = []
     for device in get_devices():
@@ -81,23 +97,66 @@ def select_device():
 
 # Get matching device profiles from spapp        
 def get_devices():
-    r = requests.get(
-        url = "{0}{1}/_design/devices/_view/paths".format(c['urlbase'],c['srcDB']),
-        params = {
-            'limit': 200,
-            'reduce': 'true',
-            'group_level': 1
-        },
-        auth = c['srcAPIKey']
-    )
     devices = []
-    for row in r.json()['rows']:
-        if (row['value'] >= 20 and row['value'] <= 100):
-            devices.append([row['key'][0],row['value']])
-            if len(devices) >= 30:
-                return devices
+    while len(devices) == 0:
+        r = requests.get(
+            url = "{0}{1}/_design/devices/_view/paths".format(c['urlbase'],c['srcDB']),
+            params = {
+                'limit': 5,
+                'reduce': 'true',
+                'group_level': 1,
+                'skip': random_skip()
+            },
+            auth = c['srcAPIKey']
+        )
+        for row in r.json()['rows']:
+            if (row['value'] >= 20 and row['value'] <= 100):
+                if (check_in_japan(row['key'][0])):
+                    devices.append([row['key'][0],row['value']])
+                    if len(devices) >= 30:
+                        return devices
+            else:
+                continue
     return devices
 
+# Return a random value to skip docs in the source database by
+def random_skip():
+    return random.randint(0,2000)
+
+# Check to see if the given ID's first check-in lies within Japan
+def check_in_japan(deviceID):
+    # Get first point for selected device
+    try:
+        r = requests.get(
+            url = "{0}{1}/_design/devices/_view/paths".format(c['urlbase'],c['srcDB']),
+            params = {
+                'reduce': 'false',
+                'start_key': json.dumps([deviceID,0]),
+                'end_key': json.dumps([deviceID,{}]),
+                'limit': 1,
+                'include_docs': 'true'
+            },
+            auth = c['srcAPIKey']
+        )
+    except Exception as e:
+        print e
+    coords = r.json()['rows'][0]['doc']['geometry']['coordinates']
+    WKT = "point({0}+{1})".format(coords[0],coords[1])
+    try:
+        r = requests.get(
+            url = "{0}{1}/_design/geoIdx/_geo/newGeoIndex?g={2}".format(c['urlbase'],'japangeo', WKT),
+            params = {
+                'relation': 'intersects',
+                'include_docs': 'false'
+            },
+            auth = c['srcAPIKey']
+        )
+    except Exception as e:
+        print e
+    if len(r.json()['rows']) > 0:
+        return True
+    else:
+        return False
 
 def get_device_points(deviceID):
     # Get points for selected device
@@ -125,17 +184,41 @@ def get_device_points(deviceID):
         if lastTime <> row['key'][1]:
             coordTimes.append(row['key'][1])
             coordinates.append(row['value'])
+            #insert_point(row['value'])
             lastTime = row['key'][1]
         
     uncorrectedLine = geojson.Feature(
         geometry=geojson.LineString(coordinates),
         properties={
             'deviceID': deviceID,
-            'coordTimes': coordTimes
+            'coordTimes': coordTimes,
+            'color': '0000FF'
         }
     )
     
+    insert_points(coordinates)
+    
     return uncorrectedLine
+
+def insert_points(coordinates):
+    
+    features = []
+    
+    for coord in coordinates:
+        features.append(
+            geojson.Feature(
+                geometry = geojson.Point(coord)
+            )
+        )
+    
+    struct = {'docs':features}
+    
+    r = requests.post(
+        url = "{0}{1}/_bulk_docs".format(c['urlbase'],c['destDB']),
+        data = json.dumps(struct),
+        auth = c['destAPIKey'],
+        headers = {'Content-Type': 'application/json'}
+    )
 
 def insert_raw_line(uncorrectedLine):
     # Insert uncorrected line and wait for user input
@@ -143,14 +226,15 @@ def insert_raw_line(uncorrectedLine):
     r = requests.put(
         url = "{0}{1}/pathbefore".format(c['urlbase'],c['destDB']),
         auth = c['destAPIKey'],
-        data = json.dumps(uncorrectedLine)
+        data = json.dumps(uncorrectedLine),
+        headers = {'Content-Type': 'application/json'}
     )
     waiting = raw_input(" View raw line in map: https://bradwbonn.cloudant.com/dashboard.html#/database/wi2demo/_design/geoIdx/_geoindex/newGeoIndex\nPress Enter after viewing.")
     return r.json()['rev']
 
-def correction(uncorrectedLine, rev):
+def correction(uncorrectedLine):
     # Delete uncorrected line from DB
-    delete_doc('pathbefore',rev)
+    #delete_doc('pathbefore',rev)
     
     # Pull corrected linestring from Mapbox API
     service = MapMatcher()
@@ -158,11 +242,13 @@ def correction(uncorrectedLine, rev):
     
     matchProfiles = [
         'walking',
-        'driving',
-        'cycling'
+        'driving'
     ]
     
     for profile in matchProfiles:
+        
+        # Add check for geo inside Japan boundary
+        
         goodMatches = 0
         try:
             mapboxProfile = "mapbox.{0}".format(profile)
