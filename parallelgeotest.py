@@ -12,14 +12,13 @@ from os import environ
 
 c = dict(
     # Set variables
-    srcAPIKey = environ.get('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です
+    srcAPIKey = (environ.get('WI2_CLOUDANT_API_KEY'),environ.get('WI2_CLOUDANT_API_PASS')), # APIキーは読み取り専用です
     srcDB = 'spapp',
     urlbase = "https://bradwbonn.cloudant.com/"
 )
 
 def main():
     a = get_args()
-    
     print " サンプルデータセットを取得しています。お待ちください"
     
     datapoints = get_point_set(a.datapoints)

@@ -22,7 +22,7 @@ def main():
     print "\n デモンストレーションの種類を選択してください"
     print " 1: 複雑なジオフェンス    (complex geofence)"
     print " 2: 単純な座標            (simple coordinates)"
-    myAuth = environ.get('WI2_CLOUDANT_API_KEY') # APIキーは読み取り専用です
+    srcAPIKey = (environ.get('WI2_CLOUDANT_API_KEY'),environ.get('WI2_CLOUDANT_API_PASS')), # APIキーは読み取り専用です
     demoType = int(raw_input(" (1-2) > "))
     if demoType == 1:    
         myDB = "fencemaster" # 複雑なジオフェンスオブジェクトのデータベース
