@@ -8,6 +8,7 @@ import requests, json, random
 from time import time
 from multiprocessing import Pool
 from argparse import ArgumentParser
+from os import environ
 
 c = dict(
     # Set variables

@@ -5,6 +5,7 @@
 import requests, json, geojson, sys, time, random
 from mapbox import MapMatcher
 from argparse import ArgumentParser
+from os import environ
 
 c = dict(
     # Set variables
