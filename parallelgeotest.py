@@ -12,7 +12,7 @@ from os import environ
 
 c = dict(
     # Set variables
-    srcAPIKey = environ('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です
+    srcAPIKey = environ.get('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です
     srcDB = 'spapp',
     urlbase = "https://bradwbonn.cloudant.com/"
 )

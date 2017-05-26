@@ -9,7 +9,7 @@ from os import environ
 
 c = dict(
     # Set variables
-    destAPIKey = environ('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です,
+    destAPIKey = environ.get('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です,
     srcAPIKey = destAPIKey,
     srcDB = 'spapp',
     destDB = 'wi2demo',
