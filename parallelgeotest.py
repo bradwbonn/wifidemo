@@ -11,7 +11,7 @@ from argparse import ArgumentParser
 
 c = dict(
     # Set variables
-    srcAPIKey = ("diaccarthereselyingensid","1fa4571f5365d6991b036c67713ace151cc9bab9"),
+    srcAPIKey = environ('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です
     srcDB = 'spapp',
     urlbase = "https://bradwbonn.cloudant.com/"
 )

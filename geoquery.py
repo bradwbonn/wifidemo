@@ -15,19 +15,19 @@ from pprint import pprint
 from sys import exit
 from time import time
 from mapbox import Geocoder
+from os import environ
 
 def main():
     myAccount = "bradwbonn"
     print "\n デモンストレーションの種類を選択してください"
     print " 1: 複雑なジオフェンス    (complex geofence)"
     print " 2: 単純な座標            (simple coordinates)"
+    myAuth = environ('WI2_CLOUDANT_API_KEY') # APIキーは読み取り専用です
     demoType = int(raw_input(" (1-2) > "))
     if demoType == 1:    
         myDB = "fencemaster" # 複雑なジオフェンスオブジェクトのデータベース
-        myAuth = ("tinetiffeencesidetteryto","1d181a41ebbe621ad2cf7fd5780261efeae17c7e") # APIキーは読み取り専用です
     elif demoType ==2:
         myDB = "testfences" # 座標点のデータベース
-        myAuth = ("ieuredislonlyeacticullea","e346439405bc87a5ea7adb3941f5f92bcf83a3c2")
     else:
         exit(" 無効入力 ...\n")
     myDDoc = "geoIdx"

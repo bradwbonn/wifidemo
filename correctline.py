@@ -8,8 +8,8 @@ from argparse import ArgumentParser
 
 c = dict(
     # Set variables
-    destAPIKey = ("wsticallyingencessisenig","fb9fbc35872348954aefff64fe3d99f0a46c2bc4"),
-    srcAPIKey = ("diaccarthereselyingensid","1fa4571f5365d6991b036c67713ace151cc9bab9"),
+    destAPIKey = environ('WI2_CLOUDANT_API_KEY'), # APIキーは読み取り専用です,
+    srcAPIKey = destAPIKey,
     srcDB = 'spapp',
     destDB = 'wi2demo',
     urlbase = "https://bradwbonn.cloudant.com/",
